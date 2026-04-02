@@ -1,0 +1,112 @@
+
+
+local lsp_servers = {
+	--Default
+	lua_ls = {
+		-- https://luals.github.io/wiki/settings/ | `:h nvim_get_runtime_file`
+		Lua = { workspace = { library = vim.api.nvim_get_runtime_file("lua", true) } },
+	},
+	stylua = {},
+	--Python
+	ty = {
+		cmd = { "ty", "server" },
+		filetypes = { "python" },
+		root_markers = { "pyproject.toml", "ty.toml", ".git" },
+	},
+	ruff = {
+		cmd = { "ruff", "server" },
+		filetypes = { "python" },
+		root_markers = { "pyproject.toml", "ruff.toml", ".ruff.toml", "setup.py", "setup.cfg", ".git" },
+	},
+	--Web
+	ts_ls = {},
+	svelte = {
+		cmd = { "svelteserver", "--stdio" },
+		filetypes = { "svelte" },
+		root_markers = { "svelte.config.js", "svelte.config.cjs", "svelte.config.mjs", "package.json", ".git" },
+	}, ---NOTE: Requires ts_ls to be installed.
+	--Debuggers
+	debugpy = {},
+}
+
+--LSP via Mason
+vim.pack.add({
+	{ src = "https://github.com/neovim/nvim-lspconfig", version = vim.version.range("2.7.0") }, -- default configs for lsps
+	{ src = "https://github.com/mason-org/mason.nvim", version = vim.version.range("2.2.1") },
+	{ src = "https://github.com/mason-org/mason-lspconfig.nvim", version = vim.version.range("2.1.0") }, -- lspconfig bridge
+	{
+		src = "https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim",
+		version = "443f1ef8b5e6bf47045cb2217b6f748a223cf7dc",
+	}, --2026-04-1
+})
+
+require("mason").setup()
+require("mason-lspconfig").setup()
+require("mason-tool-installer").setup({
+	ensure_installed = vim.tbl_keys(lsp_servers),
+})
+
+for server, config in pairs(lsp_servers) do
+	vim.lsp.config(server, {
+		settings = config,
+		on_attach = function(_, bufnr)
+			local opts = { buffer = bufnr, silent = true }
+			map("n", "<leader>gd", vim.lsp.buf.definition, vim.tbl_extend("force", opts, { desc = "Go to definition" }))
+			map(
+				"n",
+				"<leader>gi",
+				vim.lsp.buf.implementation,
+				vim.tbl_extend("force", opts, { desc = "Go to implementation" })
+			)
+			map("n", "<leader>gr", vim.lsp.buf.references, vim.tbl_extend("force", opts, { desc = "Find references" }))
+			map("n", "<leader>gf", vim.lsp.buf.format, vim.tbl_extend("force", opts, { desc = "Format" }))
+			map("n", "K", vim.lsp.buf.hover, vim.tbl_extend("force", opts, { desc = "Hover documentation" }))
+		end,
+	})
+end
+
+vim.lsp.enable(vim.tbl_keys(lsp_servers))
+
+--Debugger config
+vim.pack.add({
+	{ src = "https://github.com/mfussenegger/nvim-dap", version = vim.version.range("0.10.0") },
+	{ src = "https://github.com/nvim-neotest/nvim-nio", version = vim.version.range("1.10.1") },
+	{ src = "https://github.com/rcarriga/nvim-dap-ui", version = vim.version.range("4.0.0") },
+	{
+		src = "https://github.com/mfussenegger/nvim-dap-python",
+		version = "1808458eba2b18f178f990e01376941a42c7f93b",
+	}, --2026-04-1
+})
+
+local dap = require("dap")
+local dapui = require("dapui")
+dapui.setup()
+
+-- Automatically open/close DAP UI
+dap.listeners.after.event_initialized["dapui_config"] = function()
+	dapui.open()
+end
+dap.listeners.before.event_terminated["dapui_config"] = function()
+	dapui.close()
+end
+dap.listeners.before.event_exited["dapui_config"] = function()
+	dapui.close()
+end
+
+local mason_packages = vim.fn.stdpath("data") .. "/mason/packages/"
+require("dap-python").setup(mason_packages .. "debugpy/venv/bin/python")
+
+--Diagnostics
+vim.diagnostic.config({
+	signs = {
+		text = {
+			[vim.diagnostic.severity.ERROR] = " ",
+			[vim.diagnostic.severity.WARN] = " ",
+			[vim.diagnostic.severity.INFO] = " ",
+			[vim.diagnostic.severity.HINT] = " ",
+		},
+	},
+	virtual_text = true, -- show inline diagnostics
+})
+
+vim.cmd.filetype("plugin indent on")
