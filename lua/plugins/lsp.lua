@@ -8,7 +8,7 @@ vim.pack.add({
 		src = "https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim",
 		version = "443f1ef8b5e6bf47045cb2217b6f748a223cf7dc",
 	}, --2026-04-1
-})
+}, { confirm = false, load = true })
 
 require("mason").setup()
 require("mason-lspconfig").setup()

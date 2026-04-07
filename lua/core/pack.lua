@@ -2,7 +2,8 @@
 -- diagnostics = { disable = { 'missing-fields' } }
 require("plugins.ui.treesitter")
 require("plugins.ui.themes")
-require("plugins.mason")
+require("plugins.lsp")
+-- require("plugins.dap")
 require("plugins.mini")
 
 vim.pack.add({
