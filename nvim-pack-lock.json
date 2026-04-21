@@ -36,9 +36,9 @@
       "src": "https://github.com/nvim-mini/mini.starter"
     },
     "nvim-dap": {
-      "rev": "6a5bba0ddea5d419a783e170c20988046376090d",
+      "rev": "45a69eba683a2c448dd9ecfc4de89511f0646b5f",
       "src": "https://github.com/mfussenegger/nvim-dap",
-      "version": "0.10.0 - 0.10.0"
+      "version": "'45a69eba683a2c448dd9ecfc4de89511f0646b5f'"
     },
     "nvim-dap-python": {
       "rev": "1808458eba2b18f178f990e01376941a42c7f93b",

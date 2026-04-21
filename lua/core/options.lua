@@ -24,7 +24,7 @@ o.incsearch = true -- Show matches incrementally as you type the pattern
 -- Appearance
 o.showtabline = 2 -- Always show tabline (0 = never, 1 = if multiple tabs, 2 = always)
 o.laststatus = 2 -- Show statusline (2 = always, 3 = global statusline)
-o.cmdheight = 0 -- Hide cmdline when not in use
+-- o.cmdheight = 0 -- Hide cmdline when not in use
 o.termguicolors = true -- Enable 24-bit RGB colors (required for modern themes)
 o.signcolumn = "yes" -- Always show sign column (prevents text shifting)
 o.cursorline = true -- Highlight the line containing the cursor
