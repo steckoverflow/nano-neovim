@@ -5,6 +5,10 @@ vim.pack.add({
 		version = vim.version.range("4.14.1"), --2026-04-1
 	},
 	{
+		src = "https://github.com/projekt0n/github-nvim-theme",
+		name = "github",
+	},
+	{
 		src = "https://github.com/spaceduck-theme/nvim",
 		name = "spaceduck",
 		version = vim.version.range("1.1.0"), --2026-04-1

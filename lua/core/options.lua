@@ -30,7 +30,7 @@ o.signcolumn = "yes" -- Always show sign column (prevents text shifting)
 o.cursorline = true -- Highlight the line containing the cursor
 o.scrolloff = 12 -- Keep 8 lines visible above/below cursor when scrolling
 o.sidescrolloff = 8 -- Keep 8 columns visible left/right of cursor
-o.colorcolumn = "80" -- Highlight column 80
+o.colorcolumn = "88" -- Highlight column 80
 -- Splits
 o.splitright = true -- Open vertical splits to the right of current window
 o.splitbelow = true -- Open horizontal splits below current window
