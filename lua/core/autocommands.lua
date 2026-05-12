@@ -17,13 +17,37 @@ autocmd("TextYankPost", {
 --- File =======================================================================
 -- Auto format before save
 local lsp_format_group = vim.api.nvim_create_augroup("LspAutoFormat", { clear = true })
+
+local function pick_format_client(bufnr)
+	local clients = vim.lsp.get_clients({ bufnr = bufnr, method = "textDocument/formatting" })
+	if #clients == 0 then
+		return nil
+	end
+
+	for _, client in ipairs(clients) do
+		if client.name == "ruff" then
+			return client
+		end
+	end
+
+	return clients[1]
+end
+
 vim.api.nvim_create_autocmd("BufWritePre", {
 	group = lsp_format_group,
 	callback = function(event)
-		local client = vim.lsp.get_clients({ bufnr = event.buf })[1]
-		if client and client:supports_method("textDocument/formatting") then
-			vim.lsp.buf.format({ async = false })
+		local client = pick_format_client(event.buf)
+		if not client then
+			return
 		end
+
+		vim.lsp.buf.format({
+			bufnr = event.buf,
+			async = false,
+			filter = function(format_client)
+				return format_client.id == client.id
+			end,
+		})
 	end,
 })
 

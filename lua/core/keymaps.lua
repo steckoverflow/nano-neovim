@@ -9,6 +9,9 @@ map("n", "<space>", "<Nop>", { desc = "Disable space in normal mode" })
 map("n", "<esc>", "<cmd>nohlsearch<CR>", { desc = "Clear search highlight" })
 map("n", "<leader>fo", ":lua vim.lsp.buf.format()<CR>", { desc = "Format buffer (LSP)" })
 map("n", "<leader>ps", "<cmd>lua vim.pack.update()<CR>", { desc = "Update plugins" })
+map("n", "<leader>uT", function()
+	require("core.theme").select()
+end, { desc = "Select theme" })
 
 -- Split window keymaps
 map("n", "<leader>|", ":vsplit<CR>", { desc = "Vertical split" })
@@ -138,7 +141,7 @@ map("n", "<leader>dq", function()
 	require("dap").terminate()
 end, { desc = "Quit" })
 map("n", "<leader>du", function()
-	require("dap").toggle()
+	require("dapui").toggle()
 end, { desc = "Toggle UI" })
 
 -- Diagnostics

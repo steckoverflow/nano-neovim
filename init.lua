@@ -16,7 +16,7 @@ require("core.misc")
 -- run without plugins nvim --cmd ":lua vim.g.nop=1"
 if vim.g.nop == nil then
 	require("core.pack")
-	vim.cmd.colorscheme("github_light")
+	require("core.theme").load_default()
 end
 
 require("core.statusline")
