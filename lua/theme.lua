@@ -14,7 +14,6 @@ local function apply_theme(scheme)
   if not ok then
     vim.notify("Failed to load theme '" .. scheme .. "': " .. err, vim.log.levels.ERROR)
   end
-
   return ok
 end
 
@@ -32,7 +31,6 @@ function M.select()
     if not choice then
       return
     end
-
     if apply_theme(choice.scheme) then
       vim.notify("Theme: " .. choice.label, vim.log.levels.INFO)
     end

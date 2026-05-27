@@ -1,0 +1,6 @@
+require("plugins.treesitter")
+require("plugins.mini")
+require("plugins.lsp")
+require("plugins.dap")
+require("plugins.comments")
+require("plugins.themes")
