@@ -47,6 +47,10 @@
       "rev": "7bdc9decc8b623f245c1e42a64bc41e61d574c5e",
       "src": "https://github.com/nvim-mini/mini.starter"
     },
+    "newpaper": {
+      "rev": "519e90147a0524dad9da887dcf77eb9c2eb8fc89",
+      "src": "https://github.com/yorik1984/newpaper.nvim"
+    },
     "nvim-dap": {
       "rev": "45a69eba683a2c448dd9ecfc4de89511f0646b5f",
       "src": "https://github.com/mfussenegger/nvim-dap",
@@ -76,6 +80,10 @@
       "rev": "7caec274fd19c12b55902a5b795100d21531391f",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter",
       "version": "'7caec274fd19c12b55902a5b795100d21531391f'"
+    },
+    "rose-pine": {
+      "rev": "ff483051a47e27d84bdef47703538df1ed9f4a47",
+      "src": "https://github.com/rose-pine/neovim"
     },
     "spaceduck": {
       "rev": "f476d6804114d04295ecad83979c7b3946b08010",

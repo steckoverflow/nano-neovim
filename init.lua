@@ -1,12 +1,7 @@
---- Requires:
---- Nvim >= 0.12
+require("vim._core.ui2").enable({})
+
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
-
--- TODO:
--- - DAP
--- - Maybe native LSP over Mason?
--- - Evaluate AutoComplete
 
 require("core.options")
 require("core.keymaps")
@@ -15,8 +10,8 @@ require("core.misc")
 
 -- run without plugins nvim --cmd ":lua vim.g.nop=1"
 if vim.g.nop == nil then
-	require("core.pack")
-	require("core.theme").load_default()
+  require("core.pack")
+  require("core.theme").load_default()
 end
 
 require("core.statusline")
