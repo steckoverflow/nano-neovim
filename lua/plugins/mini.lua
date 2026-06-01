@@ -1,14 +1,14 @@
 vim.pack.add({
-  { src = "https://github.com/nvim-mini/mini.nvim" }
+	{ src = "https://github.com/nvim-mini/mini.nvim" },
 }, { confirm = false, load = true })
 
 require("mini.starter").setup({
-  autoopen = true,
-  items = nil,
-  header = function()
-    local v = vim.version()
-    local versionstring = string.format("  Neovim Version: %d.%d.%d", v.major, v.minor, v.patch)
-    local image = [[
+	autoopen = true,
+	items = nil,
+	header = function()
+		local v = vim.version()
+		local versionstring = string.format("  Neovim Version: %d.%d.%d", v.major, v.minor, v.patch)
+		local image = [[
          ___ . .  _
 "T$$$P"   |  |_| |_
  :$$$     |  | | |_
@@ -24,29 +24,29 @@ require("mini.starter").setup({
   $$$b.____.dP                                 $ .$. .$.$ss,d$$$b.   T$b.
 .d$$$$$$$$$$P                                                      `T$b.
 ]]
-    local finalimage = image .. versionstring
-    return finalimage
-  end,
+		local finalimage = image .. versionstring
+		return finalimage
+	end,
 })
 
 local MiniFiles = require("mini.files")
 MiniFiles.setup()
 vim.keymap.set("n", "<leader>e", "<cmd>lua MiniFiles.open()<cr>", { desc = "Toggle explorer" })
 vim.keymap.set("n", "<leader>-", function()
-  MiniFiles.open(vim.api.nvim_buf_get_name(0), false)
-  MiniFiles.reveal_cwd()
+	MiniFiles.open(vim.api.nvim_buf_get_name(0), false)
+	MiniFiles.reveal_cwd()
 end, { desc = "Toggle into currently opened file" })
 
 require("mini.notify").setup({
-  content = {
-    format = function(notif)
-      return notif.msg
-    end,
-  },
+	content = {
+		format = function(notif)
+			return notif.msg
+		end,
+	},
 })
 
 require("mini.cmdline").setup({
-  autocorrect = { enable = false }
+	autocorrect = { enable = false },
 })
 require("mini.surround").setup()
 
@@ -54,46 +54,55 @@ local MiniPick = require("mini.pick")
 local MiniExtra = require("mini.extra")
 MiniPick.setup()
 MiniExtra.setup()
-vim.keymap.set("n", "<leader>ff", function() MiniPick.builtin.files() end, { desc = "Mini File Picker" })
-vim.keymap.set("n", "<leader>fg", function() MiniPick.builtin.grep({ pattern = vim.fn.expand("<cword>") }) end,
-  { desc = "Grep word/Search word" })
-vim.keymap.set("n", "<leader>fh", function() MiniPick.builtin.help() end, { desc = "Mini Help" })
-vim.keymap.set("n", "<leader>fx", function() MiniExtra.pickers.diagnostic() end, { desc = "Mini Picker Diagnostics" })
-vim.keymap.set("n", "<leader>fk", function() MiniExtra.pickers.keymaps() end, { desc = 'Search keymaps' })
+vim.keymap.set("n", "<leader>ff", function()
+	MiniPick.builtin.files()
+end, { desc = "Mini File Picker" })
+vim.keymap.set("n", "<leader>fg", function()
+	MiniPick.builtin.grep({ pattern = vim.fn.expand("<cword>") })
+end, { desc = "Grep word/Search word" })
+vim.keymap.set("n", "<leader>fh", function()
+	MiniPick.builtin.help()
+end, { desc = "Mini Help" })
+vim.keymap.set("n", "<leader>fx", function()
+	MiniExtra.pickers.diagnostic()
+end, { desc = "Mini Picker Diagnostics" })
+vim.keymap.set("n", "<leader>fk", function()
+	MiniExtra.pickers.keymaps()
+end, { desc = "Search keymaps" })
 
 require("mini.pairs").setup()
 vim.keymap.set("n", "<leader>ap", function()
-  local enabled = vim.b.minipairs_disable
-  if enabled then
-    vim.b.minipairs_disable = nil
-    vim.notify("Auto pairs: ON", vim.log.levels.INFO)
-  else
-    vim.b.minipairs_disable = true
-    vim.notify("Auto pairs: OFF", vim.log.levels.INFO)
-  end
+	local enabled = vim.b.minipairs_disable
+	if enabled then
+		vim.b.minipairs_disable = nil
+		vim.notify("Auto pairs: ON", vim.log.levels.INFO)
+	else
+		vim.b.minipairs_disable = true
+		vim.notify("Auto pairs: OFF", vim.log.levels.INFO)
+	end
 end, { desc = "Toggle Auto Pairs" })
 
 local miniclue = require("mini.clue")
 miniclue.setup({
-  triggers = {
-    -- Leader triggers
-    { mode = "n", keys = "<leader>" },
-  },
-  window = {
-    delay = 100,
-  },
+	triggers = {
+		-- Leader triggers
+		{ mode = "n", keys = "<leader>" },
+	},
+	window = {
+		delay = 100,
+	},
 })
 
 require("mini.completion").setup({
-  lsp_completion = {
-    auto_setup = true,
-  }
+	lsp_completion = {
+		auto_setup = true,
+	},
 })
 
 local MiniSnippets = require("mini.snippets")
 MiniSnippets.setup({
-  snippets = {
-    MiniSnippets.gen_loader.from_lang(),     -- loads friendly-snippets
-  },
+	snippets = {
+		MiniSnippets.gen_loader.from_lang(), -- loads friendly-snippets
+	},
 })
 MiniSnippets.start_lsp_server({ match = false })
