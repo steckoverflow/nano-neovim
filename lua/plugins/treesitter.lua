@@ -19,6 +19,7 @@ local ensure_installed = {
 	"bash",
 	"http",
 	"dockerfile",
+	"svelte",
 	"python",
 }
 
