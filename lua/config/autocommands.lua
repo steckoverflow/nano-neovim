@@ -10,23 +10,23 @@ autocmd("TextYankPost", {
 	group = highlight_group,
 })
 
-local format_group = augroup("FormatOnSave", { clear = true })
-autocmd("BufWritePre", {
-	group = format_group,
-	callback = function(args)
-		local clients = vim.lsp.get_clients({
-			bufnr = args.buf,
-			method = "textDocument/formatting",
-		})
-		if #clients > 0 then
-			vim.lsp.buf.format({
-				bufnr = args.buf,
-				async = false,
-				timeout_ms = 2000,
-			})
-		end
-	end,
-})
+-- local format_group = augroup("FormatOnSave", { clear = true })
+-- autocmd("BufWritePre", {
+-- 	group = format_group,
+-- 	callback = function(args)
+-- 		local clients = vim.lsp.get_clients({
+-- 			bufnr = args.buf,
+-- 			method = "textDocument/formatting",
+-- 		})
+-- 		if #clients > 0 then
+-- 			vim.lsp.buf.format({
+-- 				bufnr = args.buf,
+-- 				async = false,
+-- 				timeout_ms = 2000,
+-- 			})
+-- 		end
+-- 	end,
+-- })
 
 -- Check if we need to reload the file when it changed
 vim.api.nvim_create_autocmd({ "FocusGained", "TermClose", "TermLeave" }, {

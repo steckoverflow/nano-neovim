@@ -41,4 +41,4 @@ dap.listeners.before.attach["dap_terminal_cleanup"] = cleanup_dap_terminals
 dap.listeners.before.event_terminated["dap_terminal_cleanup"] = cleanup_dap_terminals
 dap.listeners.before.event_exited["dap_terminal_cleanup"] = cleanup_dap_terminals
 
-require("dap-python").setup(vim.fn.stdpath("data") .. "/debugpy/venv/bin/python")
+require("dap-python").setup("/Users/ts-air/.pyenv/versions/3.13.2/bin/python3")

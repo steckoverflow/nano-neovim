@@ -8,6 +8,18 @@ local default_keymaps = {
 	{
 		keys = "<leader>cl",
 		func = function()
+			if vim.bo.filetype == "python" then
+				vim.lsp.buf.code_action({
+					apply = true,
+					context = { only = { "source.fixAll.ruff" }, diagnostics = {} },
+				})
+				vim.lsp.buf.code_action({
+					apply = true,
+					context = { only = { "source.organizeImports.ruff" }, diagnostics = {} },
+				})
+				return
+			end
+
 			if vim.fn.exists(":LspEslintFixAll") > 0 then
 				vim.cmd("LspEslintFixAll")
 			else
@@ -116,7 +128,6 @@ vim.lsp.enable({
 	"taplo",
 	"ruff",
 	"svelte",
-	"debugpy",
 })
 
 -- Load Lsp on-demand, e.g: eslint is disable by default

@@ -58,8 +58,8 @@ vim.keymap.set("n", "<leader>ff", function()
 	MiniPick.builtin.files()
 end, { desc = "Mini File Picker" })
 vim.keymap.set("n", "<leader>fg", function()
-	MiniPick.builtin.grep({ pattern = vim.fn.expand("<cword>") })
-end, { desc = "Grep word/Search word" })
+	MiniPick.builtin.grep_live({ method = "plain" })
+end, { desc = "Live grep" })
 vim.keymap.set("n", "<leader>fh", function()
 	MiniPick.builtin.help()
 end, { desc = "Mini Help" })
@@ -93,16 +93,16 @@ miniclue.setup({
 	},
 })
 
+-- local MiniSnippets = require("mini.snippets")
+-- MiniSnippets.setup({
+-- 	snippets = {
+-- 		MiniSnippets.gen_loader.from_lang(), -- loads friendly-snippets
+-- 	},
+-- })
+-- MiniSnippets.start_lsp_server({ match = false })
+
 require("mini.completion").setup({
 	lsp_completion = {
 		auto_setup = true,
 	},
 })
-
-local MiniSnippets = require("mini.snippets")
-MiniSnippets.setup({
-	snippets = {
-		MiniSnippets.gen_loader.from_lang(), -- loads friendly-snippets
-	},
-})
-MiniSnippets.start_lsp_server({ match = false })
