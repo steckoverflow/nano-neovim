@@ -16,7 +16,7 @@ A compact Neovim config built around native `vim.pack`, native `vim.lsp` configs
 Language servers and tools are configured with Neovim's native `vim.lsp` loader from files in `lsp/`. Install the command-line tools you need yourself:
 
 ```bash
-brew install lua-language-server gopls ruff stylua taplo ty
+brew install lua-language-server gopls ruff stylua taplo ty delve
 npm install -g vscode-langservers-extracted yaml-language-server typescript vtsls eslint
 python -m venv ~/.local/share/nvim/debugpy/venv
 ~/.local/share/nvim/debugpy/venv/bin/python -m pip install debugpy

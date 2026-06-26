@@ -6,39 +6,13 @@ vim.pack.add({
 	{
 		src = "https://github.com/mfussenegger/nvim-dap-python",
 		version = "1808458eba2b18f178f990e01376941a42c7f93b",
-	}, --2026-04-1
+	},
+	{ src = "https://github.com/leoluz/nvim-dap-go", version = "b4421153ead5d726603b02743ea40cf26a51ed5f" },
 }, { confirm = false, load = true })
 
-local dap = require("dap")
+require("dap")
+-- require("dap").set_log_level("TRACE")
 local dapui = require("dapui")
 dapui.setup()
-
-local function cleanup_dap_terminals()
-	for _, buf in ipairs(vim.api.nvim_list_bufs()) do
-		if vim.api.nvim_buf_is_valid(buf) then
-			local name = vim.api.nvim_buf_get_name(buf)
-			if name:match("^%[dap%-terminal%]") then
-				pcall(vim.api.nvim_buf_delete, buf, { force = true })
-			end
-		end
-	end
-end
-
--- Automatically open/close DAP UI
-dap.listeners.after.event_initialized["dapui_config"] = function()
-	dapui.open()
-end
-dap.listeners.before.event_terminated["dapui_config"] = function()
-	dapui.close()
-end
-dap.listeners.before.event_exited["dapui_config"] = function()
-	dapui.close()
-end
-
--- Work around old nvim-dap terminal buffer reuse bug on restart.
-dap.listeners.before.launch["dap_terminal_cleanup"] = cleanup_dap_terminals
-dap.listeners.before.attach["dap_terminal_cleanup"] = cleanup_dap_terminals
-dap.listeners.before.event_terminated["dap_terminal_cleanup"] = cleanup_dap_terminals
-dap.listeners.before.event_exited["dap_terminal_cleanup"] = cleanup_dap_terminals
-
 require("dap-python").setup("/Users/ts-air/.pyenv/versions/3.13.2/bin/python3")
+require("dap-go").setup()
