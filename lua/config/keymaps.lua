@@ -11,7 +11,7 @@ end, { desc = "Select theme" })
 
 map("n", "<leader>|", ":vsplit<CR>", { desc = "Vertical split" })
 map("n", "<leader>_", ":split<CR>", { desc = "Horizontal split" })
---
+
 -- Resize windows with Ctrl+Shift+arrows (macOS friendly)
 map("n", "<C-S-Up>", "<cmd>resize +5<CR>", opts)
 map("n", "<C-S-Down>", "<cmd>resize -5<CR>", opts)
@@ -42,11 +42,26 @@ map("n", "<C-d>", "<C-d>zz", { desc = "Scroll down half page (centered)" })
 map("n", "<C-u>", "<C-u>zz", { desc = "Scroll up half page (centered)" })
 map("n", "n", "nzzzv", { desc = "Next search result (centered)" })
 map("n", "N", "Nzzzv", { desc = "Previous search result (centered)" })
---
+
 -- Better line start/end (more comfortable than $ and ^)
 map("n", "gl", "$", { desc = "Go to end of line" })
 map("n", "gh", "^", { desc = "Go to start of line" })
 
+-- Copy whole file to clipboard
+map("n", "<C-c>", ":%y+<CR>", opts)
+
+-- Commenting (add comment above/below current line)
+map("n", "gco", "o<esc>Vcx<esc><cmd>normal gcc<cr>fxa<bs>", { desc = "Add Comment Below" })
+map("n", "gcO", "O<esc>Vcx<esc><cmd>normal gcc<cr>fxa<bs>", { desc = "Add Comment Above" })
+
+-- Inspection tools (useful for debugging highlights and treesitter)
+map("n", "<leader>ui", vim.show_pos, { desc = "Inspect Pos" })
+map("n", "<leader>uI", "<cmd>InspectTree<cr>", { desc = "Inspect Tree" })
+
+-- Toggle line wrapping
+map("n", "<leader>tw", "<cmd>set wrap!<CR>", { desc = "Toggle Wrap", silent = true })
+
+--Lazygit
 map("n", "<leader>gg", function()
 	local buf = vim.api.nvim_create_buf(false, true)
 	local width = math.floor(vim.o.columns * 0.9)
