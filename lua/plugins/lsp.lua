@@ -8,18 +8,6 @@ local default_keymaps = {
 	{
 		keys = "<leader>cl",
 		func = function()
-			if vim.bo.filetype == "python" then
-				vim.lsp.buf.code_action({
-					apply = true,
-					context = { only = { "source.fixAll.ruff" }, diagnostics = {} },
-				})
-				vim.lsp.buf.code_action({
-					apply = true,
-					context = { only = { "source.organizeImports.ruff" }, diagnostics = {} },
-				})
-				return
-			end
-
 			if vim.fn.exists(":LspEslintFixAll") > 0 then
 				vim.cmd("LspEslintFixAll")
 			else
@@ -65,10 +53,11 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		local client = vim.lsp.get_client_by_id(args.data.client_id)
 		local buf = args.buf
 		if client then
+			-- NOTE: Replaced with mini.completion
 			-- Built-in completion
-			if completion == "native" and client:supports_method("textDocument/completion") then
-				vim.lsp.completion.enable(true, client.id, args.buf, { autotrigger = true })
-			end
+			-- if completion == "native" and client:supports_method("textDocument/completion") then
+			-- 	vim.lsp.completion.enable(true, client.id, args.buf, { autotrigger = true })
+			-- end
 
 			if client:supports_method("textDocument/inlayHint") then
 				vim.lsp.inlay_hint.enable(true, { bufnr = buf })
