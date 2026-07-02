@@ -101,6 +101,13 @@ MiniSnippets.setup({
 })
 MiniSnippets.start_lsp_server({ match = false })
 
+local imap_expr = function(lhs, rhs)
+	vim.keymap.set("i", lhs, rhs, { expr = true })
+end
+imap_expr("<Tab>", [[pumvisible() ? "\<C-n>" : "\<Tab>"]])
+imap_expr("<S-Tab>", [[pumvisible() ? "\<C-p>" : "\<S-Tab>"]])
+
+require("mini.icons").setup()
 require("mini.completion").setup({
 	lsp_completion = {
 		auto_setup = true,
