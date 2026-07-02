@@ -14,7 +14,7 @@ vim.api.nvim_set_hl(0, "DiagnosticInfoLine", { bg = palette.info, blend = 10 })
 vim.api.nvim_set_hl(0, "DiagnosticHintLine", { bg = palette.hint, blend = 10 })
 vim.api.nvim_set_hl(0, "DapBreakpointSign", { fg = "#FF0000", bg = nil, bold = true })
 vim.fn.sign_define("DapBreakpoint", {
-	text = "●", -- a large dot; change as desired
+	text = "ᛒ", -- a large dot; change as desired
 	texthl = "DapBreakpointSign", -- the highlight group you just defined
 	linehl = "", -- no full-line highlight
 	numhl = "", -- no number-column highlight
@@ -34,10 +34,10 @@ vim.diagnostic.config({
 	-- keep signs & virtual text, but tune them as you like
 	signs = {
 		text = {
-			[sev.ERROR] = " ",
-			[sev.WARN] = " ",
-			[sev.INFO] = " ",
-			[sev.HINT] = "󰌵 ",
+			[sev.ERROR] = "E ",
+			[sev.WARN] = "W ",
+			[sev.INFO] = "I ",
+			[sev.HINT] = "󰌵",
 		},
 	},
 	virtual_text = {
@@ -63,8 +63,8 @@ local diagnostic_goto = function(next, severity)
 end
 
 map("n", "<leader>cd", vim.diagnostic.open_float, { desc = "Line Diagnostics" })
-map("n", "]d", diagnostic_goto(true), { desc = "Next Diagnostic" })
-map("n", "[d", diagnostic_goto(false), { desc = "Prev Diagnostic" })
+map("n", "<leader>dn", diagnostic_goto(true), { desc = "Next Diagnostic" })
+map("n", "<leader>dN", diagnostic_goto(false), { desc = "Prev Diagnostic" })
 map("n", "]e", diagnostic_goto(true, "ERROR"), { desc = "Next Error" })
 map("n", "[e", diagnostic_goto(false, "ERROR"), { desc = "Prev Error" })
 map("n", "]w", diagnostic_goto(true, "WARN"), { desc = "Next Warning" })
