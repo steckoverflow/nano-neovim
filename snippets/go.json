@@ -1,0 +1,22 @@
+{
+	"If err": {
+		"prefix": "ife",
+		"body": [
+			"if err != nil {",
+			"\t$0",
+			"}"
+		],
+		"description": "if err != nil"
+	},
+  "New file": {
+    "prefix": "newf",
+    "body": [
+      "package main",
+      "",
+      "func main() {",
+        "$0",
+        "}"
+    ],
+    "description": "main go file"
+  }
+}

@@ -17,12 +17,14 @@ vim.pack.add({
 		name = "rose-pine",
 	},
 	{
+		src = "https://github.com/Mofiqul/dracula.nvim.git",
+		name = "dracula",
+	},
+	{
 		src = "https://github.com/spaceduck-theme/nvim",
 		name = "spaceduck",
 		version = vim.version.range("1.1.0"), --2026-04-1
 	},
 }, { confirm = false, load = true })
 
-require("newpaper").setup({
-	style = "light",
-})
+require("dracula").setup()
