@@ -7,6 +7,7 @@ local themes = {
 	{ label = "GitHub Dark", scheme = "github_dark" },
 	{ label = "Tokyo Night", scheme = "tokyonight" },
 	{ label = "SpaceDuck", scheme = "spaceduck" },
+	{ label = "Dracula", scheme = "dracula" },
 }
 
 local function apply_theme(scheme)
@@ -18,7 +19,7 @@ local function apply_theme(scheme)
 end
 
 function M.load_default()
-	apply_theme("newpaper")
+	apply_theme("dracula")
 end
 
 function M.select()
