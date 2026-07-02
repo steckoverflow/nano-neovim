@@ -10,24 +10,6 @@ autocmd("TextYankPost", {
 	group = highlight_group,
 })
 
--- local format_group = augroup("FormatOnSave", { clear = true })
--- autocmd("BufWritePre", {
--- 	group = format_group,
--- 	callback = function(args)
--- 		local clients = vim.lsp.get_clients({
--- 			bufnr = args.buf,
--- 			method = "textDocument/formatting",
--- 		})
--- 		if #clients > 0 then
--- 			vim.lsp.buf.format({
--- 				bufnr = args.buf,
--- 				async = false,
--- 				timeout_ms = 2000,
--- 			})
--- 		end
--- 	end,
--- })
-
 -- Check if we need to reload the file when it changed
 vim.api.nvim_create_autocmd({ "FocusGained", "TermClose", "TermLeave" }, {
 	group = augroup("checktime", { clear = true }),
@@ -47,5 +29,24 @@ vim.api.nvim_create_autocmd("BufReadPost", {
 		if mark[1] > 0 and mark[1] <= lcount then
 			pcall(vim.api.nvim_win_set_cursor, 0, mark)
 		end
+	end,
+})
+
+-- wrap and check for spell in text filetypes
+vim.api.nvim_create_autocmd("FileType", {
+	group = augroup("wrap_spell", { clear = true }),
+	pattern = { "text", "plaintex", "typst", "gitcommit", "markdown" },
+	callback = function()
+		vim.opt_local.wrap = true
+		vim.opt_local.spell = true
+	end,
+})
+
+-- Fix conceallevel for json files
+vim.api.nvim_create_autocmd({ "FileType" }, {
+	group = augroup("json_conceal", { clear = true }),
+	pattern = { "json", "jsonc", "json5" },
+	callback = function()
+		vim.opt_local.conceallevel = 0
 	end,
 })
