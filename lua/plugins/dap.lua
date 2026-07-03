@@ -10,9 +10,23 @@ vim.pack.add({
 	{ src = "https://github.com/leoluz/nvim-dap-go", version = "b4421153ead5d726603b02743ea40cf26a51ed5f" },
 }, { confirm = false, load = true })
 
-require("dap")
+local dap = require("dap")
 -- require("dap").set_log_level("TRACE")
 local dapui = require("dapui")
 dapui.setup()
+
+dap.listeners.before.attach.dapui_config = function()
+	dapui.open()
+end
+dap.listeners.before.launch.dapui_config = function()
+	dapui.open()
+end
+dap.listeners.before.event_terminated.dapui_config = function()
+	dapui.close()
+end
+dap.listeners.before.event_exited.dapui_config = function()
+	dapui.close()
+end
+
 require("dap-python").setup("/Users/ts-air/.pyenv/versions/3.13.2/bin/python3")
 require("dap-go").setup()
