@@ -21,6 +21,10 @@ local ensure_installed = {
 	"dockerfile",
 	"svelte",
 	"python",
+	"yaml",
+	"markdown",
+	"markdown_inline",
+	"regex",
 }
 
 treesitter.install(ensure_installed)
