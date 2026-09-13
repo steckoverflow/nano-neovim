@@ -116,6 +116,7 @@ vim.lsp.enable({
 	"taplo",
 	"ruff",
 	"svelte",
+	"ocamllsp",
 })
 
 -- Load Lsp on-demand, e.g: eslint is disable by default

@@ -19,7 +19,7 @@ local function apply_theme(scheme)
 end
 
 function M.load_default()
-	apply_theme("dracula")
+	apply_theme("github_light")
 end
 
 function M.select()

@@ -18,6 +18,7 @@ Language servers and tools are configured with Neovim's native `vim.lsp` loader 
 ```bash
 brew install lua-language-server gopls ruff stylua taplo ty delve
 npm install -g vscode-langservers-extracted yaml-language-server typescript vtsls eslint
+opam install ocaml-lsp-server ocamlformat
 python -m venv ~/.local/share/nvim/debugpy/venv
 ~/.local/share/nvim/debugpy/venv/bin/python -m pip install debugpy
 ```
@@ -29,6 +30,7 @@ Notes:
 - `vtsls` is the default TypeScript server. Set `vim.g.lsp_typescript_server` before loading the config to use another configured TypeScript server.
 - ESLint only starts when an ESLint flat config is found and is skipped when an Oxlint config is present.
 - Python DAP uses `debugpy`; install it into the virtualenv path configured in `lua/plugins/dap.lua`.
+- `ocamllsp` formats via `ocamlformat`; add a `.ocamlformat` file (can be empty) at your project root so it actually reformats instead of no-op'ing.
 
 ## Install
 
@@ -59,7 +61,7 @@ nvim --cmd ":lua vim.g.nop=1"
 The config installs parsers for:
 
 - Go, Rust, TypeScript, JavaScript, TSX
-- HTML, CSS, JSON, Bash, HTTP, Dockerfile, Python
+- HTML, CSS, JSON, Bash, HTTP, Dockerfile, Python, OCaml
 
 Treesitter highlighting starts automatically for filetypes with an available parser.
 

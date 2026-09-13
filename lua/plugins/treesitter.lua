@@ -21,6 +21,7 @@ local ensure_installed = {
 	"dockerfile",
 	"svelte",
 	"python",
+	"ocaml",
 	"yaml",
 	"markdown",
 	"markdown_inline",

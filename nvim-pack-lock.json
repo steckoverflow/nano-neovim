@@ -2,7 +2,7 @@
   "plugins": {
     "dracula": {
       "rev": "ae752c13e95fb7c5f58da4b5123cb804ea7568ee",
-      "src": "https://github.com/Mofiqul/dracula.nvim"
+      "src": "https://github.com/Mofiqul/dracula.nvim.git"
     },
     "github": {
       "rev": "c106c9472154d6b2c74b74565616b877ae8ed31d",
@@ -18,18 +18,15 @@
     },
     "mason-lspconfig.nvim": {
       "rev": "f2fa60409630ec2d24acf84494fb55e1d28d593c",
-      "src": "https://github.com/mason-org/mason-lspconfig.nvim",
-      "version": "2.1.0 - 2.1.0"
+      "src": "https://github.com/mason-org/mason-lspconfig.nvim"
     },
     "mason-tool-installer.nvim": {
       "rev": "443f1ef8b5e6bf47045cb2217b6f748a223cf7dc",
-      "src": "https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim",
-      "version": "'443f1ef8b5e6bf47045cb2217b6f748a223cf7dc'"
+      "src": "https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim"
     },
     "mason.nvim": {
       "rev": "44d1e90e1f66e077268191e3ee9d2ac97cc18e65",
-      "src": "https://github.com/mason-org/mason.nvim",
-      "version": "2.2.1 - 2.2.1"
+      "src": "https://github.com/mason-org/mason.nvim"
     },
     "mini.clue": {
       "rev": "f8a11789cf34a7bae396dc0f828d06cdb5066793",
@@ -81,8 +78,7 @@
     },
     "nvim-lspconfig": {
       "rev": "0203a9608d63eda57679b01e69f33a7b4c34b0d1",
-      "src": "https://github.com/neovim/nvim-lspconfig",
-      "version": "2.7.0 - 2.7.0"
+      "src": "https://github.com/neovim/nvim-lspconfig"
     },
     "nvim-nio": {
       "rev": "21f5324bfac14e22ba26553caf69ec76ae8a7662",

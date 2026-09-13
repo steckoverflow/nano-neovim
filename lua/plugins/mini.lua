@@ -51,7 +51,7 @@ require("mini.starter").setup({
                   :.,' ,' ,'  ,'  /   /   /   ,-------------------.   \   \   \  `. `.`. `..:
                   ,' ,'  '   /   /   /   /   //                   \\   \   \   \   \  ` `.SSt
 
-                                          Go on a code adventure XoXo...
+                                          Go on a code adventure...
 
 ]]
 		local finalimage = image .. versionstring
