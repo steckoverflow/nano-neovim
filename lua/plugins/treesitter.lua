@@ -26,6 +26,7 @@ local ensure_installed = {
 	"markdown",
 	"markdown_inline",
 	"regex",
+	"gleam",
 }
 
 treesitter.install(ensure_installed)
