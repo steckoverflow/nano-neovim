@@ -19,7 +19,7 @@ local function apply_theme(scheme)
 end
 
 function M.load_default()
-	apply_theme("github_light")
+	apply_theme("newpaper")
 end
 
 function M.select()

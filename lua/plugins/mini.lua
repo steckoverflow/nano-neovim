@@ -2,6 +2,25 @@ vim.pack.add({
 	{ src = "https://github.com/nvim-mini/mini.nvim" },
 }, { confirm = false, load = true })
 
+require("mini.git").setup()
+require("mini.diff").setup({
+	view = {
+		style = "sign",
+		signs = { add = "+", change = "~", delete = "-" },
+		priority = 5,
+	},
+	-- Preserve `gh` for line-start navigation; keep Git actions in LazyGit.
+	mappings = { apply = "", reset = "", textobject = "" },
+})
+vim.keymap.set("n", "<leader>gb", "<cmd>vertical Git blame -- %<cr>", { desc = "Git blame (split)" })
+vim.keymap.set("n", "<leader>gp", function()
+	if MiniDiff.get_buf_data() == nil then
+		vim.notify("No Git diff available for this buffer", vim.log.levels.INFO)
+		return
+	end
+	MiniDiff.toggle_overlay()
+end, { desc = "Toggle Git diff preview" })
+
 require("mini.starter").setup({
 	autoopen = true,
 	items = nil,

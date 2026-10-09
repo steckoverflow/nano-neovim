@@ -5,7 +5,7 @@ A compact Neovim config built around native `vim.pack`, native `vim.lsp` configs
 ## Requirements
 
 - Neovim `>= 0.12`
-- `git` for plugin downloads
+- `git >= 2.38` for plugin downloads and Mini Diff's Git source
 - `ripgrep` / `rg` for `mini.pick` grep
 - A compiler toolchain (`cc`/`clang`/`gcc` and `make`) for Treesitter parsers
 - A Nerd Font-compatible font for diagnostic icons
@@ -50,7 +50,7 @@ nvim --cmd ":lua vim.g.nop=1"
 ## Included Plugins
 
 - `nvim-treesitter` for parser installation and highlighting
-- `mini.nvim` modules: starter, files, notify, cmdline, surround, pick, extra, pairs, clue, completion, snippets
+- `mini.nvim` modules: git, diff, starter, files, notify, cmdline, surround, pick, extra, pairs, clue, completion, snippets
 - Native `vim.lsp` with config files under `lsp/`
 - `nvim-dap`, `nvim-dap-ui`, `nvim-dap-python`, and `nvim-nio`
 - `todo-comments.nvim`
@@ -108,6 +108,10 @@ Treesitter highlighting starts automatically for filetypes with an available par
 | `<leader>dn` / `<leader>dp` | Next / previous diagnostic |
 | `<leader>ds` | Send diagnostics to location list |
 | `<leader>gg` | Open lazygit in a floating terminal |
+| `<leader>gb` | Show Git blame for the current file in a vertical split |
+| `<leader>gp` | Toggle Git diff overlay, including deleted text and word changes |
+| `[h` / `]h` | Previous / next diff hunk |
+| `[H` / `]H` | First / last diff hunk |
 | `<leader>|` | Vertical split |
 | `<C-S-Up/Down/Left/Right>` | Resize windows |
 | `<C-h/j/k/l>` | Move between windows |
@@ -120,6 +124,21 @@ Treesitter highlighting starts automatically for filetypes with an available par
 | `<leader>w` | Write file |
 | `<leader>q` | Quit window |
 | `<leader>x` | Delete terminal buffers and quit all |
+
+## Git Integration
+
+Mini Git provides the `:Git` command and on-demand split blame. Mini Diff shows
+colored `+`, `~`, and `-` gutter signs for added, changed, and deleted lines,
+including unsaved edits. Two sign slots are reserved; Git signs have lower
+priority than diagnostic and breakpoint signs.
+
+Diffs compare the current buffer against the Git index, not HEAD. Staging changes
+therefore clears their signs, and entirely untracked files have no diff signs by
+default. Use `<leader>gp` to inspect removed text and word-level changes.
+
+Mini Diff's apply, reset, and textobject mappings are disabled to preserve `gh`
+and leave staging/reset operations in LazyGit (`<leader>gg`). The existing
+statusline is unchanged and is not connected to Mini's Git data.
 
 ## Debugging
 
