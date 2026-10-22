@@ -44,7 +44,6 @@ hi("StatusLineNC", { guibg = NONE, guifg = NONE })
 
 hi("StatusMode", { guibg = palette.green, guifg = palette.dark_gray, gui = "bold" })
 hi("StatusModeToNorm", { guibg = NONE, guifg = palette.green })
-
 -- git
 hi("StatusGit", { guibg = palette.dark_sienna, guifg = palette.light_gray, gui = "bold" })
 hi("StatusGitToNorm", { guibg = NONE, guifg = palette.pink })
@@ -66,6 +65,7 @@ hi("StatusHintIcon", { guibg = NONE, guifg = palette.light_green })
 
 hi("StatusBuffer", { guibg = palette.dark_cyan, guifg = palette.light_gray })
 hi("StatusType", { guibg = palette.dark_cyan, guifg = palette.light_gray })
+hi("StatusTypeToNorm", { guibg = NONE, guifg = NONE })
 hi("StatusNorm", { guibg = NONE, guifg = NONE })
 hi("StatusLocation", { guibg = palette.soft_violet, guifg = palette.light_gray })
 hi("StatusPercent", { guibg = palette.teal, guifg = palette.dark_gray, gui = "bold" })
@@ -115,30 +115,31 @@ vim.api.nvim_create_autocmd({ "BufWipeout", "BufDelete" }, {
 	end,
 })
 
--- Git repo/branch with caching - uses gitsigns buffer variables for performance
 local function get_git_branch()
-	local branch = vim.b.gitsigns_head
-	if not branch or branch == "" then
+	local ok, mini_git = pcall(require, "mini.git")
+	if not ok then
 		return ""
 	end
-
-	-- Get repo name from gitsigns status dict if available
-	local gs = vim.b.gitsigns_status_dict
-	if gs and gs.root then
-		-- Extract repo name from the root path
-		local repo_name = vim.fn.fnamemodify(gs.root, ":t")
-		return repo_name .. "/" .. branch
+	local data = mini_git.get_buf_data(0)
+	if not data or not data.head_name or data.head_name == "" then
+		return ""
 	end
-
-	return branch
+	local repo_name = data.root and vim.fn.fnamemodify(data.root, ":t") or ""
+	if repo_name == "" then
+		return data.head_name
+	end
+	return repo_name .. "/" .. data.head_name
 end
 
 local function build_git_diff()
-	local gs = vim.b.gitsigns_status_dict or {}
-	local added = gs.added or 0
-	local changed = gs.changed or 0
-	local removed = gs.removed or 0
-
+	local data = require("mini.diff").get_buf_data(0)
+	if not data or not data.summary then
+		return ""
+	end
+	local summary = data.summary
+	local added = summary.add or 0
+	local changed = summary.change or 0
+	local deleted = summary.delete or 0
 	local diff_str = ""
 	if added > 0 then
 		diff_str = diff_str .. "%#StatusDiffAdd# " .. added .. " "
@@ -146,11 +147,12 @@ local function build_git_diff()
 	if changed > 0 then
 		diff_str = diff_str .. "%#StatusDiffChange# " .. changed .. " "
 	end
-	if removed > 0 then
-		diff_str = diff_str .. "%#StatusDiffDelete# " .. removed .. " "
+	if deleted > 0 then
+		diff_str = diff_str .. "%#StatusDiffDelete# " .. deleted .. " "
 	end
-
-	-- reset to StatusLine for everything that follows
+	if diff_str == "" then
+		return ""
+	end
 	return diff_str .. "%#StatusLine#"
 end
 
@@ -171,9 +173,10 @@ local function get_diagnostics()
 	if (c.h or 0) > 0 then
 		s = s .. "%#StatusHintIcon# " .. c.h .. " "
 	end
-
-	-- reset to StatusLine for following text
-	return s .. "%#StatusLine#"
+	if s == "" then
+		return ""
+	end
+	return s .. "%#StatusLine#" -- reset to StatusLine for following text
 end
 
 -- File icon
@@ -182,16 +185,9 @@ local function get_file_icon()
 	if _icon_cache[bufnr] ~= nil then
 		return _icon_cache[bufnr]
 	end
-
-	local ok, icons = pcall(require, "nvim-web-devicons")
-	if not ok then
-		_icon_cache[bufnr] = ""
-		return ""
-	end
 	local name = vim.api.nvim_buf_get_name(bufnr)
-	local f = fn.fnamemodify(name, ":t")
-	local e = fn.fnamemodify(name, ":e")
-	local icon = icons.get_icon(f, e, { default = true })
+	local filename = vim.fn.fnamemodify(name, ":t")
+	local icon = require("mini.icons").get("file", filename)
 	local result = icon and icon .. " " or ""
 	_icon_cache[bufnr] = result
 	return result
@@ -212,15 +208,15 @@ end
 
 -- Mode icons
 local mode_icons = {
-	n = " NORMAL",
-	c = " COMMAND",
-	t = " TERMINAL",
-	i = " INSERT",
-	R = " REPLACE",
-	V = " V-LINE",
-	[""] = " V-BLOCK", -- Visual Block
-	r = " R-PENDING",
-	v = " VISUAL",
+	n = " N",
+	c = " C",
+	t = " T",
+	i = " I",
+	R = " R",
+	V = " V-L",
+	[""] = " V-B", -- Visual Block
+	r = " R-P",
+	v = " V",
 }
 
 -- 4) Build statusline
@@ -251,7 +247,7 @@ function M.build()
 
 	local di = get_diagnostics()
 	if di ~= "" then
-		st = st .. "%#StatusLSP# " .. di .. " " .. "%#StatusLSPToNorm#"
+		st = st .. di
 	end
 
 	-- right align
