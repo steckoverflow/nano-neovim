@@ -64,6 +64,9 @@ end
 
 map("n", "<leader>cd", vim.diagnostic.open_float, { desc = "Line Diagnostics" })
 map("n", "<leader>dn", diagnostic_goto(true), { desc = "Next Diagnostic" })
+map("n", "<leader>ds", function()
+	vim.diagnostic.setloclist()
+end, { desc = "Diagnostic list" })
 map("n", "<leader>dN", diagnostic_goto(false), { desc = "Prev Diagnostic" })
 map("n", "]e", diagnostic_goto(true, "ERROR"), { desc = "Next Error" })
 map("n", "[e", diagnostic_goto(false, "ERROR"), { desc = "Prev Error" })
