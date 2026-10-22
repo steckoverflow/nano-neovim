@@ -1,7 +1,7 @@
 local opt = vim.opt
 
 opt.number = true -- Line numbers
-opt.relativenumber = true -- Relative line numbers
+opt.relativenumber = false -- Relative line numbers
 opt.cursorline = true -- Highlight current line
 opt.wrap = false -- Don't wrap lines
 opt.scrolloff = 10 -- Keep 10 lines above/below cursor
@@ -40,7 +40,6 @@ opt.synmaxcol = 300 -- Syntax highlighting limit
 opt.ruler = false -- Disable the default ruler
 opt.virtualedit = "block" -- Allow cursor to move where there is no text in visual block mode
 opt.winminwidth = 5 -- Minimum window width
-vim.opt.winborder = "rounded" --req 0.12 It sets the default border for all floating windows: LSP hover, signature help, diagnostics floats, everything.
 
 -- File handling
 opt.backup = false -- Don't create backup files
