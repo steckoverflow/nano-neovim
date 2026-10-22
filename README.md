@@ -16,20 +16,20 @@ A compact Neovim config built around native `vim.pack`, native `vim.lsp` configs
 Language servers and tools are configured with Neovim's native `vim.lsp` loader from files in `lsp/`. Install the command-line tools you need yourself:
 
 ```bash
-brew install lua-language-server gopls ruff stylua taplo ty delve
-npm install -g vscode-langservers-extracted yaml-language-server typescript vtsls eslint
+brew install lua-language-server gopls ruff stylua taplo ty delve gleam
+npm install -g vscode-langservers-extracted yaml-language-server typescript @vtsls/language-server eslint svelte-language-server
 opam install ocaml-lsp-server ocamlformat
-python -m venv ~/.local/share/nvim/debugpy/venv
-~/.local/share/nvim/debugpy/venv/bin/python -m pip install debugpy
+/Users/ts-air/.pyenv/versions/3.13.2/bin/python3 -m pip install debugpy
 ```
 
 Notes:
 
 - `vscode-langservers-extracted` provides `vscode-html-language-server`, `vscode-css-language-server`, and `vscode-json-language-server`.
 - `yaml-language-server` provides YAML support.
-- `vtsls` is the default TypeScript server. Set `vim.g.lsp_typescript_server` before loading the config to use another configured TypeScript server.
+- `vtsls` is the default TypeScript server. Its config uses Node.js 20+ when available; otherwise it falls back to `fnm` with Node.js 24. If using that fallback, install the Vtsls package in the Node.js 24 environment too. Set `vim.g.lsp_typescript_server` before loading the config to select another server with a corresponding config in `lsp/`.
+- `svelte-language-server` provides the `svelteserver` command; Gleam's `gleam lsp` is provided by the Gleam compiler.
 - ESLint only starts when an ESLint flat config is found and is skipped when an Oxlint config is present.
-- Python DAP uses `debugpy`; install it into the virtualenv path configured in `lua/plugins/dap.lua`.
+- Python DAP uses `debugpy` from `/Users/ts-air/.pyenv/versions/3.13.2/bin/python3`, as configured in `lua/plugins/dap.lua`. This interpreter path is machine-specific; update the config if your Python executable is elsewhere.
 - `ocamllsp` formats via `ocamlformat`; add a `.ocamlformat` file (can be empty) at your project root so it actually reformats instead of no-op'ing.
 
 ## Install
@@ -50,18 +50,19 @@ nvim --cmd ":lua vim.g.nop=1"
 ## Included Plugins
 
 - `nvim-treesitter` for parser installation and highlighting
-- `mini.nvim` modules: git, diff, starter, files, notify, cmdline, surround, pick, extra, pairs, clue, completion, snippets
+- `mini.nvim` modules: git, diff, starter, files, notify, cmdline, surround, pick, extra, pairs, clue, completion, snippets, icons
 - Native `vim.lsp` with config files under `lsp/`
 - `nvim-dap`, `nvim-dap-ui`, `nvim-dap-python`, and `nvim-nio`
 - `todo-comments.nvim`
-- Themes: Tokyo Night, GitHub, Newpaper, Rose Pine, and SpaceDuck
+- Themes: Tokyo Night, GitHub Light/Dark, Newpaper, Rose Pine Dawn, SpaceDuck, and Dracula
 
 ## Treesitter
 
 The config installs parsers for:
 
 - Go, Rust, TypeScript, JavaScript, TSX
-- HTML, CSS, JSON, Bash, HTTP, Dockerfile, Python, OCaml
+- HTML, CSS, JSON, Bash, HTTP, Dockerfile, Python, OCaml, Svelte, YAML
+- Markdown, Markdown inline, regex, and Gleam
 
 Treesitter highlighting starts automatically for filetypes with an available parser.
 
@@ -73,6 +74,8 @@ Treesitter highlighting starts automatically for filetypes with an available par
 - Diagnostics show inline virtual text and sign-column icons.
 - Undo history is persistent; swap and backup files are disabled.
 - Completion uses native popup/fuzzy options plus `mini.completion` LSP capabilities.
+- LSP inlay hints are enabled by default when supported; `<leader>uh` toggles them for the current buffer. Hints are hidden while editing in Insert mode.
+- UI2 routes messages to a separate message window by default (visible for four seconds); up to 500 remain available with `:messages` during the current session. Progress messages are still routed to the command area. The command line is hidden while idle, leaving the statusline at the bottom.
 - Snippets are loaded through `mini.snippets` from language snippet collections.
 - Default colorscheme is `newpaper`; theme selection is available through `<leader>uT`.
 
@@ -82,11 +85,12 @@ Treesitter highlighting starts automatically for filetypes with an available par
 | --- | --- |
 | `<leader>ps` | Update plugins with `vim.pack.update()` |
 | `<leader>uT` | Select a theme |
+| `<leader>uh` | Toggle LSP inlay hints for the current buffer |
 | `<leader>e` | Open `mini.files` |
 | `<leader>-` | Reveal current file in `mini.files` when plugins are enabled |
 | `<leader>_` | Horizontal split |
 | `<leader>ff` | Pick files |
-| `<leader>fg` | Grep the word under the cursor |
+| `<leader>fg` | Open live grep |
 | `<leader>fh` | Search help |
 | `<leader>fx` | Search diagnostics |
 | `<leader>fk` | Search keymaps |
@@ -102,10 +106,9 @@ Treesitter highlighting starts automatically for filetypes with an available par
 | `<leader>fo` | Format buffer |
 | `<leader>uf` | Toggle format on save |
 | `<leader>cd` | Show diagnostic details |
-| `]d` / `[d` | Next / previous diagnostic |
 | `]e` / `[e` | Next / previous error |
 | `]w` / `[w` | Next / previous warning |
-| `<leader>dn` / `<leader>dp` | Next / previous diagnostic |
+| `<leader>dn` / `<leader>dN` | Next / previous diagnostic |
 | `<leader>ds` | Send diagnostics to location list |
 | `<leader>gg` | Open lazygit in a floating terminal |
 | `<leader>gb` | Show Git blame for the current file in a vertical split |
@@ -137,8 +140,9 @@ therefore clears their signs, and entirely untracked files have no diff signs by
 default. Use `<leader>gp` to inspect removed text and word-level changes.
 
 Mini Diff's apply, reset, and textobject mappings are disabled to preserve `gh`
-and leave staging/reset operations in LazyGit (`<leader>gg`). The existing
-statusline is unchanged and is not connected to Mini's Git data.
+and leave staging/reset operations in LazyGit (`<leader>gg`). The custom statusline
+uses Mini Git to show the repository/branch and Mini Diff to show change counts; it
+also displays diagnostics and LSP progress.
 
 ## Debugging
 
