@@ -47,6 +47,15 @@ local default_keymaps = {
 }
 
 local completion = vim.g.completion_mode or "native"
+
+vim.keymap.set("n", "<leader>uh", function()
+	local buf = vim.api.nvim_get_current_buf()
+	local enabled = vim.b[buf].inlay_hints_enabled ~= false
+	vim.b[buf].inlay_hints_enabled = not enabled
+	vim.lsp.inlay_hint.enable(not enabled, { bufnr = buf })
+	vim.notify("Inlay hints " .. (not enabled and "enabled" or "disabled"), vim.log.levels.INFO)
+end, { desc = "Toggle Inlay Hints" })
+
 vim.api.nvim_create_autocmd("LspAttach", {
 	group = augroup("lsp_attach"),
 	callback = function(args)
@@ -59,7 +68,10 @@ vim.api.nvim_create_autocmd("LspAttach", {
 			-- 	vim.lsp.completion.enable(true, client.id, args.buf, { autotrigger = true })
 			-- end
 			if client:supports_method("textDocument/inlayHint") then
-				vim.lsp.inlay_hint.enable(true, { bufnr = buf })
+				if vim.b[buf].inlay_hints_enabled == nil then
+					vim.b[buf].inlay_hints_enabled = true
+				end
+				vim.lsp.inlay_hint.enable(vim.b[buf].inlay_hints_enabled, { bufnr = buf })
 
 				if not vim.b[buf].inlay_hints_autocmd_set then
 					vim.api.nvim_create_autocmd("InsertEnter", {
@@ -71,7 +83,9 @@ vim.api.nvim_create_autocmd("LspAttach", {
 					vim.api.nvim_create_autocmd("InsertLeave", {
 						buffer = buf,
 						callback = function()
-							vim.lsp.inlay_hint.enable(true, { bufnr = buf })
+							if vim.b[buf].inlay_hints_enabled ~= false then
+								vim.lsp.inlay_hint.enable(true, { bufnr = buf })
+							end
 						end,
 					})
 					vim.b[buf].inlay_hints_autocmd_set = true
