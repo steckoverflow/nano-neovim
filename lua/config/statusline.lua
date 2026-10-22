@@ -1,30 +1,57 @@
 local M = {}
 
-local NONE = "NONE"
-local palette = {
-	burgundy = "#5f2d3b",
-	charcoal_gray = "#2c2f33",
-	dark_cyan = "#2a303c",
-	dark_gray = "#1d2021",
-	dark_sienna = "#4a2e2a",
-	deep_teal = "#2e4954",
-	forest_mist = "#35403b",
-	green = "#89b482",
-	light_gray = "#ebdbb2",
-	light_green = "#a9b665",
-	midnight_blue = "#1e2630",
-	moss_green = "#3e4a33",
-	pink = "#d3869b",
-	red = "#ea6962",
-	sky_blue = "#7daea3",
-	slate_blue = "#3b4261",
-	smoky_orchid = "#574b65",
-	soft_violet = "#4c4567",
-	teal = "#458588",
-	yellow = "#d8a657",
-}
+local function get_hl(name)
+	local hl = vim.api.nvim_get_hl(0, {
+		name = name,
+		link = false,
+	})
+	return hl
+end
 
--- Helper to issue highlight commands
+local function color(value, fallback)
+	if value then
+		return string.format("#%06x", value)
+	end
+	return fallback
+end
+
+local function get_theme_colors()
+	local normal = get_hl("Normal")
+	local statusline = get_hl("StatusLine")
+	local diff_add = get_hl("DiffAdd")
+	local diff_change = get_hl("DiffChange")
+	local diff_delete = get_hl("DiffDelete")
+	local diagnostic_error = get_hl("DiagnosticError")
+	local diagnostic_warn = get_hl("DiagnosticWarn")
+	local diagnostic_info = get_hl("DiagnosticInfo")
+	local diagnostic_hint = get_hl("DiagnosticHint")
+	local normal_fg = color(normal.fg, "#ebdbb2")
+	local normal_bg = color(normal.bg, "NONE")
+	local statusline_fg = color(statusline.fg, normal_fg)
+	local statusline_bg = color(statusline.bg, normal_bg)
+	return {
+		normal_fg = normal_fg,
+		normal_bg = normal_bg,
+		statusline_fg = statusline_fg,
+		statusline_bg = statusline_bg,
+		mode_bg = color(get_hl("ModeMsg").bg, statusline_bg),
+		mode_fg = color(get_hl("ModeMsg").fg, statusline_fg),
+		git_bg = color(get_hl("Directory").bg, statusline_bg),
+		git_fg = color(get_hl("Directory").fg, statusline_fg),
+		add = color(diff_add.fg, "#89b482"),
+		change = color(diff_change.fg, "#d8a657"),
+		delete = color(diff_delete.fg, "#ea6962"),
+		error = color(diagnostic_error.fg, "#ea6962"),
+		warn = color(diagnostic_warn.fg, "#d8a657"),
+		info = color(diagnostic_info.fg, "#7daea3"),
+		hint = color(diagnostic_hint.fg, "#a9b665"),
+		location_bg = color(get_hl("CursorLine").bg, statusline_bg),
+		location_fg = color(get_hl("CursorLine").fg, statusline_fg),
+		percent_bg = color(get_hl("Search").bg, statusline_bg),
+		percent_fg = color(get_hl("Search").fg, statusline_fg),
+	}
+end
+
 local function hi(group, opts)
 	local cmd = { "highlight!", group }
 	if opts.guibg then
@@ -39,39 +66,121 @@ local function hi(group, opts)
 	vim.cmd(table.concat(cmd, " "))
 end
 
-hi("StatusLine", { guibg = NONE, guifg = NONE })
-hi("StatusLineNC", { guibg = NONE, guifg = NONE })
+local function setup_highlights()
+	local colors = get_theme_colors()
+	hi("StatusLine", {
+		guibg = colors.statusline_bg,
+		guifg = colors.statusline_fg,
+	})
+	hi("StatusLineNC", {
+		guibg = colors.statusline_bg,
+		guifg = colors.statusline_fg,
+	})
+	hi("StatusMode", {
+		guibg = colors.mode_bg,
+		guifg = colors.mode_fg,
+		gui = "bold",
+	})
+	hi("StatusModeToNorm", {
+		guibg = colors.statusline_bg,
+		guifg = colors.statusline_fg,
+	})
+	hi("StatusGit", {
+		guibg = colors.git_bg,
+		guifg = colors.git_fg,
+		gui = "bold",
+	})
+	hi("StatusGitToNorm", {
+		guibg = colors.statusline_bg,
+		guifg = colors.statusline_fg,
+	})
+	hi("StatusDiffAdd", {
+		guibg = colors.statusline_bg,
+		guifg = colors.add,
+		gui = "bold",
+	})
+	hi("StatusDiffChange", {
+		guibg = colors.statusline_bg,
+		guifg = colors.change,
+		gui = "bold",
+	})
+	hi("StatusDiffDelete", {
+		guibg = colors.statusline_bg,
+		guifg = colors.delete,
+		gui = "bold",
+	})
+	hi("StatusFile", {
+		guibg = colors.statusline_bg,
+		guifg = colors.statusline_fg,
+		gui = "bold",
+	})
+	hi("StatusFileToNorm", {
+		guibg = colors.statusline_bg,
+		guifg = colors.statusline_fg,
+	})
+	hi("StatusLSP", {
+		guibg = colors.statusline_bg,
+		guifg = colors.statusline_fg,
+		gui = "bold",
+	})
+	hi("StatusLSPToNorm", {
+		guibg = colors.statusline_bg,
+		guifg = colors.statusline_fg,
+	})
 
-hi("StatusMode", { guibg = palette.green, guifg = palette.dark_gray, gui = "bold" })
-hi("StatusModeToNorm", { guibg = NONE, guifg = palette.green })
--- git
-hi("StatusGit", { guibg = palette.dark_sienna, guifg = palette.light_gray, gui = "bold" })
-hi("StatusGitToNorm", { guibg = NONE, guifg = palette.pink })
-hi("StatusDiffAdd", { guibg = NONE, guifg = palette.light_green, gui = "bold" })
-hi("StatusDiffChange", { guibg = NONE, guifg = palette.yellow, gui = "bold" })
-hi("StatusDiffDelete", { guibg = NONE, guifg = palette.red, gui = "bold" })
+	hi("StatusErrorIcon", {
+		guibg = colors.statusline_bg,
+		guifg = colors.error,
+		gui = "bold",
+	})
+	hi("StatusWarnIcon", {
+		guibg = colors.statusline_bg,
+		guifg = colors.warn,
+		gui = "bold",
+	})
 
---file
-hi("StatusFile", { guibg = NONE, guifg = NONE, gui = "bold" })
-hi("StatusFileToNorm", { guibg = NONE, guifg = NONE })
+	hi("StatusInfoIcon", {
+		guibg = colors.statusline_bg,
+		guifg = colors.info,
+		gui = "bold",
+	})
+	hi("StatusHintIcon", {
+		guibg = colors.statusline_bg,
+		guifg = colors.hint,
+	})
 
-hi("StatusLSP", { guibg = NONE, guifg = NONE, gui = "bold" })
-hi("StatusLSPToNorm", { guibg = NONE, guifg = NONE })
+	hi("StatusBuffer", {
+		guibg = colors.statusline_bg,
+		guifg = colors.statusline_fg,
+	})
 
-hi("StatusErrorIcon", { guibg = NONE, guifg = palette.red, gui = "bold" })
-hi("StatusWarnIcon", { guibg = NONE, guifg = palette.yellow, gui = "bold" })
-hi("StatusInfoIcon", { guibg = NONE, guifg = palette.sky_blue, gui = "bold" })
-hi("StatusHintIcon", { guibg = NONE, guifg = palette.light_green })
+	hi("StatusType", {
+		guibg = colors.statusline_bg,
+		guifg = colors.statusline_fg,
+	})
+	hi("StatusTypeToNorm", {
+		guibg = colors.statusline_bg,
+		guifg = colors.statusline_fg,
+	})
 
-hi("StatusBuffer", { guibg = palette.dark_cyan, guifg = palette.light_gray })
-hi("StatusType", { guibg = palette.dark_cyan, guifg = palette.light_gray })
-hi("StatusTypeToNorm", { guibg = NONE, guifg = NONE })
-hi("StatusNorm", { guibg = NONE, guifg = NONE })
-hi("StatusLocation", { guibg = palette.soft_violet, guifg = palette.light_gray })
-hi("StatusPercent", { guibg = palette.teal, guifg = palette.dark_gray, gui = "bold" })
+	hi("StatusNorm", {
+		guibg = colors.statusline_bg,
+		guifg = colors.statusline_fg,
+	})
+
+	hi("StatusLocation", {
+		guibg = colors.location_bg,
+		guifg = colors.location_fg,
+	})
+
+	hi("StatusPercent", {
+		guibg = colors.percent_bg,
+		guifg = colors.percent_fg,
+		gui = "bold",
+	})
+end
 
 local fn = vim.fn
-
 local _diag_cache = {} -- [bufnr] -> { e=n, w=n, i=n, h=n }
 
 vim.api.nvim_create_autocmd("DiagnosticChanged", {
@@ -287,5 +396,14 @@ end
 vim.opt.laststatus = 3 -- global statusline
 vim.opt.showmode = false -- Dont show mode since we have a statusline
 vim.o.statusline = "%!v:lua.require('config.statusline').build()"
+
+setup_highlights()
+
+vim.api.nvim_create_autocmd("ColorScheme", {
+	callback = function()
+		setup_highlights()
+		vim.cmd("redrawstatus")
+	end,
+})
 
 return M
