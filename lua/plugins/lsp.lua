@@ -132,6 +132,7 @@ vim.lsp.enable({
 	"svelte",
 	"ocamllsp",
 	"gleam",
+	"biome",
 })
 
 -- Load Lsp on-demand, e.g: eslint is disable by default

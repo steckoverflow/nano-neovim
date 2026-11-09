@@ -16,7 +16,7 @@ A compact Neovim config built around native `vim.pack`, native `vim.lsp` configs
 Language servers and tools are configured with Neovim's native `vim.lsp` loader from files in `lsp/`. Install the command-line tools you need yourself:
 
 ```bash
-brew install lua-language-server gopls ruff stylua taplo ty delve gleam
+brew install lua-language-server gopls ruff stylua taplo ty delve gleam biome
 npm install -g vscode-langservers-extracted yaml-language-server typescript @vtsls/language-server eslint svelte-language-server
 opam install ocaml-lsp-server ocamlformat
 /Users/ts-air/.pyenv/versions/3.13.2/bin/python3 -m pip install debugpy
@@ -25,6 +25,7 @@ opam install ocaml-lsp-server ocamlformat
 Notes:
 
 - `vscode-langservers-extracted` provides `vscode-html-language-server`, `vscode-css-language-server`, and `vscode-json-language-server`.
+- `biome` provides JSON/JSONC formatting, since `vscode-json-language-server` has no formatter.
 - `yaml-language-server` provides YAML support.
 - `vtsls` is the default TypeScript server. Its config uses Node.js 20+ when available; otherwise it falls back to `fnm` with Node.js 24. If using that fallback, install the Vtsls package in the Node.js 24 environment too. Set `vim.g.lsp_typescript_server` before loading the config to select another server with a corresponding config in `lsp/`.
 - `svelte-language-server` provides the `svelteserver` command; Gleam's `gleam lsp` is provided by the Gleam compiler.
