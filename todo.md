@@ -45,7 +45,7 @@ Fix first: 1, 7, 8. Then 2–6.
   - Delete the unused `StatusNorm` and `StatusLSPToNorm`.
   - Drop the icon cache, which goes stale after `:w foo.py`, and call `mini.icons.get` directly.
   - Drop the diagnostic cache and call `vim.diagnostic.count(0)`.
-- [ ] **16. Ignored or duplicated LSP settings**
+- [x] **16. Ignored or duplicated LSP settings**
   - `lsp/gopls.lua:85-87`: delete the top-level `completeUnimported`. It is ignored outside `gopls = {}` and is already the default.
   - `lsp/vtsls.lua:40-52`: delete the `valid_filetypes` re-check.
   - `lsp/eslint.lua:65`: delete the stale comment about `oxlint.lua`.

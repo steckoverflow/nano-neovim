@@ -62,7 +62,7 @@ return {
 		local fname = vim.api.nvim_buf_get_name(bufnr)
 		local home_stop = vim.fs.dirname(vim.fn.expand("$HOME"))
 
-		-- Priority: If Oxlint is found (same stop boundary as oxlint.lua), disable ESLint
+		-- Priority: if an Oxlint config is found, disable ESLint
 		local oxlint_config = vim.fs.find(OXLINT_CONFIG, { path = fname, upward = true, stop = home_stop })[1]
 		if oxlint_config then
 			on_dir(nil)

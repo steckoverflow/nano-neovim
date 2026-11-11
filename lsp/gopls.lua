@@ -82,7 +82,4 @@ return {
 		get_std_lib_dir()
 		on_dir(get_root_dir(fname))
 	end,
-	settings = {
-		completeUnimported = true,
-	},
 }
