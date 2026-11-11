@@ -16,7 +16,7 @@ Fix first: 1, 7, 8. Then 2–6.
   The local `auto_format` flag drifts from `:FormatDisable`. Fix: delete the flag and use `vim.cmd(vim.g.disable_autoformat and "FormatEnable" or "FormatDisable")`.
 - [x] **6. HTML never formats** (`lsp/html.lua:7`)
   Fix: add `init_options = { provideFormatter = true }` (same as `cssls.lua`) and delete the top-level `embeddedLanguages`.
-- [ ] **7. `vim.tbl_flatten` deprecation warning on every start** (`lua/plugins/dap.lua:5`)
+- [x] **7. `vim.tbl_flatten` deprecation warning on every start** (`lua/plugins/dap.lua:5`)
   The pinned nvim-dap-ui (Mar 2024) calls it in `dapui/logging.lua:42`. Fix: bump the pin to a current commit or remove `version`.
 
 ## Should fix

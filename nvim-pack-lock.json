@@ -72,9 +72,9 @@
       "version": "'1808458eba2b18f178f990e01376941a42c7f93b'"
     },
     "nvim-dap-ui": {
-      "rev": "13888eb35faaba48efaf49130b83e0d12e042e1b",
+      "rev": "cc9dd33aade7f20bae414d0cba163bc60d4d4b43",
       "src": "https://github.com/rcarriga/nvim-dap-ui",
-      "version": "'13888eb35faaba48efaf49130b83e0d12e042e1b'"
+      "version": "'cc9dd33aade7f20bae414d0cba163bc60d4d4b43'"
     },
     "nvim-lspconfig": {
       "rev": "0203a9608d63eda57679b01e69f33a7b4c34b0d1",
