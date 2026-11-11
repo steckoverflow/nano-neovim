@@ -27,7 +27,7 @@ Fix first: 1, 7, 8. Then 2–6.
   Run `:lua vim.pack.del({"gitsigns.nvim","lazygit.nvim","mason.nvim","mason-lspconfig.nvim","mason-tool-installer.nvim","nvim-lspconfig","mini.clue","mini.files","mini.pairs","mini.pick","mini.starter"})`, then commit the lockfile.
 - [x] **10. README misses `tree-sitter-cli`** (`README.md`, Requirements)
   nvim-treesitter (main) needs `tree-sitter-cli` 0.26.1 or later. Add it to Requirements and to the `brew install` line.
-- [ ] **11. `gf` / `:find` can freeze in JS repos** (`lua/config/options.lua:65`)
+- [x] **11. `gf` / `:find` can freeze in JS repos** (`lua/config/options.lua:65`)
   `path:append("**")` walks `node_modules` and `.git`. Fix: delete the line, since `<leader>ff` already finds files.
 - [ ] **12. No startup check** (repo)
   Add a script or README line that runs `nvim --headless "+qa"` and `nvim --headless --cmd "lua vim.g.nop=1" README.md "+qa"`, and fails on any output.
