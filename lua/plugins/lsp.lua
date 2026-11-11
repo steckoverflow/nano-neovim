@@ -21,20 +21,7 @@ local default_keymaps = {
 	},
 	{ keys = "<leader>cr", func = vim.lsp.buf.rename, desc = "Code Rename" },
 	{ keys = "<leader>k", func = vim.lsp.buf.hover, desc = "Hover Documentation", has = "hoverProvider" },
-	{ keys = "K", func = vim.lsp.buf.hover, desc = "Hover (alt)", has = "hoverProvider" },
 	{ keys = "gd", func = vim.lsp.buf.definition, desc = "Goto Definition", has = "definitionProvider" },
-	{
-		keys = "grt",
-		func = vim.lsp.buf.type_definition,
-		desc = "Goto Type Definition",
-		has = "typeDefinitionProvider",
-	},
-	{
-		keys = "grx",
-		func = vim.lsp.codelens.run,
-		desc = "Run Codelens",
-		has = "codeLensProvider",
-	},
 	{ keys = "<leader>cw", func = vim.lsp.buf.workspace_diagnostics, desc = "Workspace Diagnostics" },
 	{
 		keys = "<leader>fo",
@@ -45,8 +32,6 @@ local default_keymaps = {
 		desc = "Format buffer",
 	},
 }
-
-local completion = vim.g.completion_mode or "native"
 
 vim.keymap.set("n", "<leader>uh", function()
 	local buf = vim.api.nvim_get_current_buf()
@@ -62,11 +47,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		local client = vim.lsp.get_client_by_id(args.data.client_id)
 		local buf = args.buf
 		if client then
-			-- NOTE: Replaced with mini.completion
-			-- Built-in completion
-			-- if completion == "native" and client:supports_method("textDocument/completion") then
-			-- 	vim.lsp.completion.enable(true, client.id, args.buf, { autotrigger = true })
-			-- end
 			if client:supports_method("textDocument/inlayHint") then
 				if vim.b[buf].inlay_hints_enabled == nil then
 					vim.b[buf].inlay_hints_enabled = true
@@ -134,12 +114,6 @@ vim.lsp.enable({
 	"gleam",
 	"biome",
 })
-
--- Load Lsp on-demand, e.g: eslint is disable by default
--- e.g: We could enable eslint by set vim.g.lsp_on_demands = {"eslint"}
-if vim.g.lsp_on_demands then
-	vim.lsp.enable(vim.g.lsp_on_demands)
-end
 
 -- Enable on-type formatting globally for servers that support it
 vim.lsp.on_type_formatting.enable()

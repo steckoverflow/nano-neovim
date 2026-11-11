@@ -36,7 +36,7 @@ Fix first: 1, 7, 8. Then 2–6.
   - Already defaults: `messagesopt`, `hidden`, `autoindent`, `backspace`, `encoding`, `incsearch`, `wildmenu`, `modifiable`, `errorbells`, `autochdir`, `winfixbuf`, `smoothscroll`, `list`, `relativenumber`, `winblend`, `foldmethod`.
   - Set twice: `shiftwidth`, and `laststatus`/`showmode` (also in `statusline.lua:396-397`).
   - `diffopt`: two values are defaults, as its own comment says.
-- [ ] **14. Dead code and duplicate keymaps in `lsp.lua`** (`lua/plugins/lsp.lua:24-37, 49, 65-69, 138-142`, ~25 lines)
+- [x] **14. Dead code and duplicate keymaps in `lsp.lua`** (`lua/plugins/lsp.lua:24-37, 49, 65-69, 138-142`, ~25 lines)
   - Unused `completion` and the commented completion block.
   - Unused `vim.g.lsp_on_demands`, with a wrong eslint comment.
   - `K`, `grt` and `grx` are already 0.12 defaults.
