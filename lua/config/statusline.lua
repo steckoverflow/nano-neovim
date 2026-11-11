@@ -296,7 +296,11 @@ local function get_file_icon()
 	end
 	local name = vim.api.nvim_buf_get_name(bufnr)
 	local filename = vim.fn.fnamemodify(name, ":t")
-	local icon = require("mini.icons").get("file", filename)
+	local ok, icons = pcall(require, "mini.icons") -- missing in no-plugin mode
+	if not ok then
+		return ""
+	end
+	local icon = icons.get("file", filename)
 	local result = icon and icon .. " " or ""
 	_icon_cache[bufnr] = result
 	return result
