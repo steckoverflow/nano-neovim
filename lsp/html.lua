@@ -4,5 +4,5 @@
 return {
 	cmd = { "vscode-html-language-server", "--stdio" },
 	filetypes = { "html" },
-	embeddedLanguages = { css = true, javascript = true },
+	init_options = { provideFormatter = true }, -- needed to enable formatting capabilities
 }
