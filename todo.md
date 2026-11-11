@@ -40,7 +40,7 @@ Fix first: 1, 7, 8. Then 2–6.
   - Unused `completion` and the commented completion block.
   - Unused `vim.g.lsp_on_demands`, with a wrong eslint comment.
   - `K`, `grt` and `grx` are already 0.12 defaults.
-- [ ] **15. Statusline bloat** (`lua/config/statusline.lua:55-181, 184-225, 292-303`, ~90 lines)
+- [x] **15. Statusline bloat** (`lua/config/statusline.lua:55-181, 184-225, 292-303`, ~90 lines)
   - Use `%#StatusLine#` instead of the 9 duplicate groups.
   - Delete the unused `StatusNorm` and `StatusLSPToNorm`.
   - Drop the icon cache, which goes stale after `:w foo.py`, and call `mini.icons.get` directly.

@@ -81,18 +81,10 @@ local function setup_highlights()
 		guifg = colors.mode_fg,
 		gui = "bold",
 	})
-	hi("StatusModeToNorm", {
-		guibg = colors.statusline_bg,
-		guifg = colors.statusline_fg,
-	})
 	hi("StatusGit", {
 		guibg = colors.git_bg,
 		guifg = colors.git_fg,
 		gui = "bold",
-	})
-	hi("StatusGitToNorm", {
-		guibg = colors.statusline_bg,
-		guifg = colors.statusline_fg,
 	})
 	hi("StatusDiffAdd", {
 		guibg = colors.statusline_bg,
@@ -114,20 +106,11 @@ local function setup_highlights()
 		guifg = colors.statusline_fg,
 		gui = "bold",
 	})
-	hi("StatusFileToNorm", {
-		guibg = colors.statusline_bg,
-		guifg = colors.statusline_fg,
-	})
 	hi("StatusLSP", {
 		guibg = colors.statusline_bg,
 		guifg = colors.statusline_fg,
 		gui = "bold",
 	})
-	hi("StatusLSPToNorm", {
-		guibg = colors.statusline_bg,
-		guifg = colors.statusline_fg,
-	})
-
 	hi("StatusErrorIcon", {
 		guibg = colors.statusline_bg,
 		guifg = colors.error,
@@ -149,25 +132,6 @@ local function setup_highlights()
 		guifg = colors.hint,
 	})
 
-	hi("StatusBuffer", {
-		guibg = colors.statusline_bg,
-		guifg = colors.statusline_fg,
-	})
-
-	hi("StatusType", {
-		guibg = colors.statusline_bg,
-		guifg = colors.statusline_fg,
-	})
-	hi("StatusTypeToNorm", {
-		guibg = colors.statusline_bg,
-		guifg = colors.statusline_fg,
-	})
-
-	hi("StatusNorm", {
-		guibg = colors.statusline_bg,
-		guifg = colors.statusline_fg,
-	})
-
 	hi("StatusLocation", {
 		guibg = colors.location_bg,
 		guifg = colors.location_fg,
@@ -181,22 +145,6 @@ local function setup_highlights()
 end
 
 local fn = vim.fn
-local _diag_cache = {} -- [bufnr] -> { e=n, w=n, i=n, h=n }
-
-vim.api.nvim_create_autocmd("DiagnosticChanged", {
-	callback = function(args)
-		local buf = args.buf
-		local sev = vim.diagnostic.severity
-		local counts = vim.diagnostic.count(buf)
-		_diag_cache[buf] = {
-			e = counts[sev.ERROR] or 0,
-			w = counts[sev.WARN] or 0,
-			i = counts[sev.INFO] or 0,
-			h = counts[sev.HINT] or 0,
-		}
-	end,
-})
-
 local _wc_state = { words = 0, timer = nil }
 
 vim.api.nvim_create_autocmd({ "TextChanged", "TextChangedI", "BufEnter" }, {
@@ -213,14 +161,6 @@ vim.api.nvim_create_autocmd({ "TextChanged", "TextChangedI", "BufEnter" }, {
 			_wc_state.timer = nil
 			_wc_state.words = fn.wordcount().words or 0
 		end, 500)
-	end,
-})
-
-local _icon_cache = {} -- [bufnr] -> icon string
-
-vim.api.nvim_create_autocmd({ "BufWipeout", "BufDelete" }, {
-	callback = function(args)
-		_icon_cache[args.buf] = nil
 	end,
 })
 
@@ -267,8 +207,9 @@ end
 
 -- Diagnostics symbols
 local function get_diagnostics()
-	local buf = vim.api.nvim_get_current_buf()
-	local c = _diag_cache[buf] or {}
+	local sev = vim.diagnostic.severity
+	local counts = vim.diagnostic.count(0)
+	local c = { e = counts[sev.ERROR], w = counts[sev.WARN], i = counts[sev.INFO], h = counts[sev.HINT] }
 	local s = ""
 	if (c.e or 0) > 0 then
 		s = s .. "%#StatusErrorIcon# " .. c.e .. " "
@@ -290,20 +231,14 @@ end
 
 -- File icon
 local function get_file_icon()
-	local bufnr = vim.api.nvim_get_current_buf()
-	if _icon_cache[bufnr] ~= nil then
-		return _icon_cache[bufnr]
-	end
-	local name = vim.api.nvim_buf_get_name(bufnr)
+	local name = vim.api.nvim_buf_get_name(0)
 	local filename = vim.fn.fnamemodify(name, ":t")
 	local ok, icons = pcall(require, "mini.icons") -- missing in no-plugin mode
 	if not ok then
 		return ""
 	end
 	local icon = icons.get("file", filename)
-	local result = icon and icon .. " " or ""
-	_icon_cache[bufnr] = result
-	return result
+	return icon and icon .. " " or ""
 end
 
 -- Word count & reading time
@@ -338,16 +273,16 @@ function M.build()
 
 	-- A: mode
 	local m = fn.mode()
-	st = st .. "%#StatusMode# " .. (mode_icons[m] or m) .. " " .. "%#StatusModeToNorm#"
+	st = st .. "%#StatusMode# " .. (mode_icons[m] or m) .. " " .. "%#StatusLine#"
 
 	-- B: git
 	local br = get_git_branch()
 	if br ~= "" then
-		st = st .. "%#StatusGit# " .. " " .. br .. " " .. "%#StatusGitToNorm#"
+		st = st .. "%#StatusGit# " .. " " .. br .. " " .. "%#StatusLine#"
 
 		local git_diff = build_git_diff()
 		if git_diff ~= "" then
-			st = st .. git_diff .. "%#StatusGitToNorm#"
+			st = st .. git_diff .. "%#StatusLine#"
 		end
 	end
 
@@ -355,7 +290,7 @@ function M.build()
 	-- local fnm = fn.expand("%:t")
 	local fnm = fn.expand("%:.")
 	if fnm ~= "" then
-		st = st .. "%#StatusFile# " .. fnm .. " " .. (vim.bo.modified and " " or "") .. "%#StatusFileToNorm#"
+		st = st .. "%#StatusFile# " .. fnm .. " " .. (vim.bo.modified and " " or "") .. "%#StatusLine#"
 	end
 
 	local di = get_diagnostics()
@@ -375,18 +310,18 @@ function M.build()
 	-- X: filetype
 	local ft = vim.bo.filetype
 	if ft ~= "" then
-		st = st .. "%#StatusType# " .. get_file_icon() .. ft .. "%#StatusTypeToNorm#"
+		st = st .. "%#StatusLine# " .. get_file_icon() .. ft .. "%#StatusLine#"
 	end
 
 	-- Y: word/reading
 	local wr = word_reading()
 	if wr ~= "" then
-		st = st .. "%#StatusBuffer# " .. " " .. wr
+		st = st .. "%#StatusLine# " .. " " .. wr
 	end
 
 	-- Z: encoding, format, location, percent
 	st = st
-		.. "%#StatusBuffer# "
+		.. "%#StatusLine# "
 		.. vim.bo.fileencoding
 		.. " "
 		.. vim.bo.fileformat
