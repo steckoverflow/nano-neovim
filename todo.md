@@ -12,7 +12,7 @@ Fix first: 1, 7, 8. Then 2–6.
   `linehl` is ignored at the top level and only works inside `signs`. The colors are dark, but the default theme is light. Fix: move `linehl` into `signs`, or delete the palette, the 4 `nvim_set_hl` calls and `linehl` (~18 lines).
 - [x] **4. Breakpoint sign loses color after theme switch** (`lua/config/diagnostics.lua:15-21`)
   Fix: `texthl = "DiagnosticError"` and delete the `nvim_set_hl` line.
-- [ ] **5. `<leader>uf` can need two presses** (`lua/plugins/lsp.lua:163-172`)
+- [x] **5. `<leader>uf` can need two presses** (`lua/plugins/lsp.lua:163-172`)
   The local `auto_format` flag drifts from `:FormatDisable`. Fix: delete the flag and use `vim.cmd(vim.g.disable_autoformat and "FormatEnable" or "FormatDisable")`.
 - [ ] **6. HTML never formats** (`lsp/html.lua:7`)
   Fix: add `init_options = { provideFormatter = true }` (same as `cssls.lua`) and delete the top-level `embeddedLanguages`.

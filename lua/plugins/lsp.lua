@@ -160,15 +160,8 @@ vim.api.nvim_create_user_command("FormatEnable", function()
 	vim.notify("Autoformat enabled", vim.log.levels.INFO)
 end, { desc = "Re-enable autoformat-on-save" })
 
-local auto_format = true
-
 vim.keymap.set("n", "<leader>uf", function()
-	auto_format = not auto_format
-	if auto_format then
-		vim.cmd("FormatEnable")
-	else
-		vim.cmd("FormatDisable")
-	end
+	vim.cmd(vim.g.disable_autoformat and "FormatEnable" or "FormatDisable")
 end, { desc = "Toggle Autoformat" })
 
 vim.api.nvim_create_autocmd("BufWritePre", {
