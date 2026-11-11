@@ -4,9 +4,9 @@ Fix first: 1, 7, 8. Then 2–6.
 
 ## Must fix
 
-- [ ] **1. No-plugins mode breaks statusline** (`lua/config/statusline.lua:299`)
+- [x] **1. No-plugins mode breaks statusline** (`lua/config/statusline.lua:299`)
   `require("mini.icons")` is called without a guard, so it fails when `vim.g.nop=1`. Fix: `local ok, icons = pcall(require, "mini.icons")`, return `""` if not ok.
-- [ ] **2. Treesitter indent never enabled** (`lua/plugins/treesitter.lua:53`)
+- [x] **2. Treesitter indent never enabled** (`lua/plugins/treesitter.lua:53`)
   `vim.treesitter.indentexpr` is nil and the line only touches the startup buffer. Fix: delete line 53. In the `FileType` callback, after `vim.treesitter.start`, set `vim.bo[buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"`.
 - [ ] **3. Whole-line diagnostic colors never show** (`lua/config/diagnostics.lua:4-14, 48-54`)
   `linehl` is ignored at the top level and only works inside `signs`. The colors are dark, but the default theme is light. Fix: move `linehl` into `signs`, or delete the palette, the 4 `nvim_set_hl` calls and `linehl` (~18 lines).
