@@ -10,7 +10,7 @@ Fix first: 1, 7, 8. Then 2–6.
   `vim.treesitter.indentexpr` is nil and the line only touches the startup buffer. Fix: delete line 53. In the `FileType` callback, after `vim.treesitter.start`, set `vim.bo[buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"`.
 - [x] **3. Whole-line diagnostic colors never show** (`lua/config/diagnostics.lua:4-14, 48-54`)
   `linehl` is ignored at the top level and only works inside `signs`. The colors are dark, but the default theme is light. Fix: move `linehl` into `signs`, or delete the palette, the 4 `nvim_set_hl` calls and `linehl` (~18 lines).
-- [ ] **4. Breakpoint sign loses color after theme switch** (`lua/config/diagnostics.lua:15-21`)
+- [x] **4. Breakpoint sign loses color after theme switch** (`lua/config/diagnostics.lua:15-21`)
   Fix: `texthl = "DiagnosticError"` and delete the `nvim_set_hl` line.
 - [ ] **5. `<leader>uf` can need two presses** (`lua/plugins/lsp.lua:163-172`)
   The local `auto_format` flag drifts from `:FormatDisable`. Fix: delete the flag and use `vim.cmd(vim.g.disable_autoformat and "FormatEnable" or "FormatDisable")`.

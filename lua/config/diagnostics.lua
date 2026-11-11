@@ -1,10 +1,9 @@
 --- diagnostic settings
 local map = vim.keymap.set
 
-vim.api.nvim_set_hl(0, "DapBreakpointSign", { fg = "#FF0000", bg = nil, bold = true })
 vim.fn.sign_define("DapBreakpoint", {
 	text = "", -- a large dot; change as desired
-	texthl = "DapBreakpointSign", -- the highlight group you just defined
+	texthl = "DiagnosticError", -- follows the colorscheme
 	linehl = "", -- no full-line highlight
 	numhl = "", -- no number-column highlight
 })
