@@ -31,7 +31,7 @@ Fix first: 1, 7, 8. Then 2–6.
   `path:append("**")` walks `node_modules` and `.git`. Fix: delete the line, since `<leader>ff` already finds files.
 - [x] **12. No startup check** (repo)
   Add a script or README line that runs `nvim --headless "+qa"` and `nvim --headless --cmd "lua vim.g.nop=1" README.md "+qa"`, and fails on any output.
-- [ ] **13. Defaults and dead flags in `options.lua`** (`lua/config/options.lua`, ~25 lines)
+- [x] **13. Defaults and dead flags in `options.lua`** (`lua/config/options.lua`, ~25 lines)
   - Dead flags: `vim.g.autoformat`, `vim.g.trouble_lualine`, the `vim.g.vscode` check.
   - Already defaults: `messagesopt`, `hidden`, `autoindent`, `backspace`, `encoding`, `incsearch`, `wildmenu`, `modifiable`, `errorbells`, `autochdir`, `winfixbuf`, `smoothscroll`, `list`, `relativenumber`, `winblend`, `foldmethod`.
   - Set twice: `shiftwidth`, and `laststatus`/`showmode` (also in `statusline.lua:396-397`).
