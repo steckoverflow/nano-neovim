@@ -8,6 +8,7 @@ A compact Neovim config built around native `vim.pack`, native `vim.lsp` configs
 - `git >= 2.38` for plugin downloads and Mini Diff's Git source
 - `ripgrep` / `rg` for `mini.pick` grep
 - A compiler toolchain (`cc`/`clang`/`gcc` and `make`) for Treesitter parsers
+- `tree-sitter-cli >= 0.26.1` to build Treesitter parsers
 - A Nerd Font-compatible font for diagnostic icons
 - `lazygit` for the `<leader>gg` terminal popup
 
@@ -16,7 +17,7 @@ A compact Neovim config built around native `vim.pack`, native `vim.lsp` configs
 Language servers and tools are configured with Neovim's native `vim.lsp` loader from files in `lsp/`. Install the command-line tools you need yourself:
 
 ```bash
-brew install lua-language-server gopls ruff stylua taplo ty delve gleam biome
+brew install lua-language-server gopls ruff stylua taplo ty delve gleam biome tree-sitter-cli
 npm install -g vscode-langservers-extracted yaml-language-server typescript @vtsls/language-server eslint svelte-language-server
 opam install ocaml-lsp-server ocamlformat
 /Users/ts-air/.pyenv/versions/3.13.2/bin/python3 -m pip install debugpy

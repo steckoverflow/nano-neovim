@@ -25,7 +25,7 @@ Fix first: 1, 7, 8. Then 2–6.
   Fix: make `cmd` a function: `cmd = function(d, c) return vim.lsp.rpc.start(get_vtsls_cmd(), d, { cwd = c.cmd_cwd, env = c.cmd_env }) end`.
 - [x] **9. Lockfile lists 11 unused plugins** (`nvim-pack-lock.json`)
   Run `:lua vim.pack.del({"gitsigns.nvim","lazygit.nvim","mason.nvim","mason-lspconfig.nvim","mason-tool-installer.nvim","nvim-lspconfig","mini.clue","mini.files","mini.pairs","mini.pick","mini.starter"})`, then commit the lockfile.
-- [ ] **10. README misses `tree-sitter-cli`** (`README.md`, Requirements)
+- [x] **10. README misses `tree-sitter-cli`** (`README.md`, Requirements)
   nvim-treesitter (main) needs `tree-sitter-cli` 0.26.1 or later. Add it to Requirements and to the `brew install` line.
 - [ ] **11. `gf` / `:find` can freeze in JS repos** (`lua/config/options.lua:65`)
   `path:append("**")` walks `node_modules` and `.git`. Fix: delete the line, since `<leader>ff` already finds files.
