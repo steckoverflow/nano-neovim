@@ -23,7 +23,7 @@ Fix first: 1, 7, 8. Then 2–6.
 
 - [x] **8. ~31 ms of startup spent on `node --version`** (`lsp/vtsls.lua:5-27`)
   Fix: make `cmd` a function: `cmd = function(d, c) return vim.lsp.rpc.start(get_vtsls_cmd(), d, { cwd = c.cmd_cwd, env = c.cmd_env }) end`.
-- [ ] **9. Lockfile lists 11 unused plugins** (`nvim-pack-lock.json`)
+- [x] **9. Lockfile lists 11 unused plugins** (`nvim-pack-lock.json`)
   Run `:lua vim.pack.del({"gitsigns.nvim","lazygit.nvim","mason.nvim","mason-lspconfig.nvim","mason-tool-installer.nvim","nvim-lspconfig","mini.clue","mini.files","mini.pairs","mini.pick","mini.starter"})`, then commit the lockfile.
 - [ ] **10. README misses `tree-sitter-cli`** (`README.md`, Requirements)
   nvim-treesitter (main) needs `tree-sitter-cli` 0.26.1 or later. Add it to Requirements and to the `brew install` line.
