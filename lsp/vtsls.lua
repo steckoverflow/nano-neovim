@@ -24,7 +24,9 @@ local function get_vtsls_cmd()
 end
 
 return {
-	cmd = get_vtsls_cmd(),
+	cmd = function(d, c)
+		return vim.lsp.rpc.start(get_vtsls_cmd(), d, { cwd = c.cmd_cwd, env = c.cmd_env })
+	end,
 	filetypes = {
 		"javascript",
 		"javascriptreact",
