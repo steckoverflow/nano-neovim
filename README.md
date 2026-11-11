@@ -49,6 +49,15 @@ To start without plugins, run:
 nvim --cmd ":lua vim.g.nop=1"
 ```
 
+## Startup check
+
+Both commands should print nothing. Any output means a startup error or warning.
+
+```bash
+nvim --headless "+qa"
+nvim --headless --cmd "lua vim.g.nop=1" README.md "+qa"
+```
+
 ## Included Plugins
 
 - `nvim-treesitter` for parser installation and highlighting

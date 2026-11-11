@@ -29,7 +29,7 @@ Fix first: 1, 7, 8. Then 2–6.
   nvim-treesitter (main) needs `tree-sitter-cli` 0.26.1 or later. Add it to Requirements and to the `brew install` line.
 - [x] **11. `gf` / `:find` can freeze in JS repos** (`lua/config/options.lua:65`)
   `path:append("**")` walks `node_modules` and `.git`. Fix: delete the line, since `<leader>ff` already finds files.
-- [ ] **12. No startup check** (repo)
+- [x] **12. No startup check** (repo)
   Add a script or README line that runs `nvim --headless "+qa"` and `nvim --headless --cmd "lua vim.g.nop=1" README.md "+qa"`, and fails on any output.
 - [ ] **13. Defaults and dead flags in `options.lua`** (`lua/config/options.lua`, ~25 lines)
   - Dead flags: `vim.g.autoformat`, `vim.g.trouble_lualine`, the `vim.g.vscode` check.
